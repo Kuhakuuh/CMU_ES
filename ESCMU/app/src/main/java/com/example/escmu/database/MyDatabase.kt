@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.escmu.database.dao.ExpenseDao
 import com.example.escmu.database.dao.UserDao
+import com.example.escmu.database.models.Expense
 import com.example.escmu.database.models.User
 
 @Database(
-    entities = [User::class],
-    version = 1,
+    entities = [User::class, Expense::class],
+    version = 2,
     exportSchema = false
 )
 
@@ -18,6 +20,8 @@ import com.example.escmu.database.models.User
 abstract class MyDatabase : RoomDatabase() {
 
     abstract val userDao: UserDao;
+    abstract val expenseDao: ExpenseDao;
+
 
     private var isInitialized = false
     companion object {

@@ -105,7 +105,7 @@ fun LoginForm(
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
                 onClick = {
-                    if (email.isBlank() == false && password.isBlank() == false) {
+                    if (email.isNotBlank() && password.isNotBlank()) {
                         onLoginClick(email)
                     } else {
                         Toast.makeText(

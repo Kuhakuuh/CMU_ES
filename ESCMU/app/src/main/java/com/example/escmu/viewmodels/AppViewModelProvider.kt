@@ -14,6 +14,10 @@ object AppViewModelProvider {
             UserViewModel(myApplication().container.userRepository)
         }
 
+        initializer {
+            HomeViewModel(myApplication().container.expenseRepository)
+        }
+
 
     }
 }
