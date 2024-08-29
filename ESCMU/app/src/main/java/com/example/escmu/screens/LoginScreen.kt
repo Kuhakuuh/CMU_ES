@@ -1,5 +1,6 @@
 package com.example.escmu.screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,21 +31,45 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.escmu.Screens
+import com.example.escmu.viewmodels.AppViewModelProvider
+import com.example.escmu.viewmodels.HomeViewModel
+import com.example.escmu.viewmodels.LoginViewModel
+import com.example.escmu.viewmodels.UserViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    loginViewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
+
+    //Verifica se o user já esta login
+    val auth:FirebaseAuth=FirebaseAuth.getInstance()
+    if (auth.currentUser != null){
+        navController.navigate(Screens.Home.screen)
+    }
+
 
     LoginForm( navController, email = email.value, password = password.value,
         onEmailChange = { email.value = it },
         onPasswordChange = { password.value = it },
         onLoginClick = {
-        }
+            try {
+                loginViewModel.signIn(email.value,password.value)
+                userViewModel.getUserByEmail(email.value)
+                navController.navigate(Screens.Home.screen)
+
+            }catch (e:Exception){
+                Log.d("Login","Fail to login")
+
+            }
+            }
     )
 
 }

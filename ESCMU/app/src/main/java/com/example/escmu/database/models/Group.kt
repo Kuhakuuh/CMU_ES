@@ -2,18 +2,12 @@ package com.example.escmu.database.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 import java.util.UUID
-
-@Entity(tableName = "expenses")
-data class Expense(
+@Entity("groups")
+data class Group(
     @PrimaryKey
     var id: String = UUID.randomUUID().toString(),
     val name:String,
-    val date: String,
-    val place:String,
-    val image:String,
-    val value:String,
+    val totalValue:Double,
     val idUser:String,
-    val idGroup:String
 )

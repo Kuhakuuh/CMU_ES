@@ -5,13 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.escmu.database.dao.ExpenseDao
+import com.example.escmu.database.dao.GroupDao
 import com.example.escmu.database.dao.UserDao
 import com.example.escmu.database.models.Expense
+import com.example.escmu.database.models.Group
 import com.example.escmu.database.models.User
 
 @Database(
-    entities = [User::class, Expense::class],
-    version = 2,
+    entities = [User::class, Expense::class, Group::class],
+    version =7,
     exportSchema = false
 )
 
@@ -21,6 +23,7 @@ abstract class MyDatabase : RoomDatabase() {
 
     abstract val userDao: UserDao;
     abstract val expenseDao: ExpenseDao;
+    abstract val groupDao:GroupDao;
 
 
     private var isInitialized = false
@@ -35,7 +38,7 @@ abstract class MyDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         MyDatabase::class.java,
-                        "user_database"
+                        "expense_database"
                     ).fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance

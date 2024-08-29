@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.escmu.Screens
+import com.example.escmu.screens.GroupsScreen
 import com.example.escmu.screens.HomeScreen
 import com.example.escmu.screens.LoginScreen
 import com.example.escmu.screens.ProfileScreen
@@ -98,6 +99,10 @@ fun BottomNavigationBar() {
             composable(Screens.SignUp.screen) {
                 SignUpScreen( navController = navController)
             }
+            composable(Screens.Groups.screen) {
+                GroupsScreen( navController = navController)
+            }
+
         }
     }
 }

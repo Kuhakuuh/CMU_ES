@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.sp
 import com.example.escmu.R
 
 
+
+
+
 @Composable
 fun OverviewCards(
     expense:Int,
@@ -37,8 +40,8 @@ fun OverviewCards(
     ) {
         ElevatedCard(
             modifier = Modifier
-                .weight(1f)
-                .aspectRatio(1f)
+                .weight(2f)
+                .aspectRatio(2f)
                 .padding(8.dp),
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
@@ -69,8 +72,8 @@ fun OverviewCards(
 
         ElevatedCard(
             modifier = Modifier
-                .weight(1f)
-                .aspectRatio(1f)
+                .weight(2f)
+                .aspectRatio(2f)
                 .padding(8.dp),
             elevation = CardDefaults.cardElevation(8.dp)
         ) {

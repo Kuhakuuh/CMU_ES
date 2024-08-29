@@ -5,5 +5,7 @@ sealed class Screens(val screen:String) {
      object Profile:Screens("profile")
      object Login:Screens("login")
      object SignUp:Screens("signup")
+     object Groups:Screens("groups")
+
 
 }

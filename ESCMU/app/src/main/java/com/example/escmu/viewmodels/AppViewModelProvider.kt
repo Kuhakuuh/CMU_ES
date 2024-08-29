@@ -18,13 +18,26 @@ object AppViewModelProvider {
             HomeViewModel(myApplication().container.expenseRepository)
         }
 
+        initializer {
+            GroupViewModel(myApplication().container.groupRepository)
+        }
+        initializer {
+            LoginViewModel()
+        }
+        initializer {
+            SignUpViewModel(myApplication().container.userRepository)
+        }
+
+
 
     }
 }
 
 /**
  * Extension function to queries for [Application] object and returns an instance of
- * [InventoryApplication].
+ * [MyApp].
+ *
  */
+
 fun CreationExtras.myApplication(): MyApp =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MyApp)

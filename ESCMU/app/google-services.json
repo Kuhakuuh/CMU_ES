@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "66526884133",
+    "project_id": "gestor-de-despesas-1101f",
+    "storage_bucket": "gestor-de-despesas-1101f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66526884133:android:516631a2131ec9d0e62acc",
+        "android_client_info": {
+          "package_name": "com.example.escmu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt2YhDuMlMa3istzUGZVGCah344IFSFiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

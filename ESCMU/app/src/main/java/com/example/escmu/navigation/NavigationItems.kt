@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,6 +22,11 @@ data class NavigationItems(
                 label = "Home",
                 icon = Icons.Filled.Home,
                 route = Screens.Home.screen
+            ),
+            NavigationItems(
+                label = "Groups",
+                icon = Icons.Filled.List,
+                route = Screens.Groups.screen
             ),
             NavigationItems(
                 label = "Login",

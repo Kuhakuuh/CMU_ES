@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id ("com.google.dagger.hilt.android") version "2.44" apply false
+    id("com.google.gms.google-services")
 
 }
 
@@ -56,7 +57,9 @@ android {
 
 dependencies {
 
-   //Navigation
+
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.0")
+    //Navigation
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
@@ -87,8 +90,10 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
 
 
-
-
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")

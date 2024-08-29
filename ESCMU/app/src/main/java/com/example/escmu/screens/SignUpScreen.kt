@@ -1,5 +1,6 @@
 package com.example.escmu.screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,12 +31,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.escmu.Screens
+import com.example.escmu.database.models.User
+import com.example.escmu.viewmodels.AppViewModelProvider
+import com.example.escmu.viewmodels.SignUpViewModel
+import com.example.escmu.viewmodels.UserViewModel
 
 @Composable
 fun SignUpScreen(
-    navController: NavController
+    navController: NavController,
+    signUpViewModel: SignUpViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
+
 ){
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
@@ -49,6 +58,15 @@ fun SignUpScreen(
         onUsernameChange = { username.value = it },
         onNameChange = { name.value = it },
         onRegisterClick = {
+            try {
+                signUpViewModel.createAccount(email.value,password.value)
+                signUpViewModel.addUserToFirestore(User(name=name.value, password = password.value, email = email.value))
+                userViewModel.addUser(User(name=name.value, password = password.value, email = email.value))
+                navController.navigate(Screens.Home.screen)
+
+            }catch (e:Exception){
+                Log.d("SignUp","Fail to signUp")
+            }
 
         }
     )
@@ -129,7 +147,7 @@ fun RegisterForm(
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
                 onClick = {
-                    if (email.isBlank() == false && password.isBlank() == false) {
+                    if (email.isNotBlank() && password.isNotBlank()) {
                         onRegisterClick(email)
                     } else {
                         Toast.makeText(
