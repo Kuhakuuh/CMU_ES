@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -60,8 +61,8 @@ fun GroupsScreen(
     val groups by viewModel.groupData.observeAsState(initial = emptyList())
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(32.dp, Alignment.Top),
-            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
@@ -78,7 +79,13 @@ fun GroupsScreen(
                         )
                 )}
             )
-            Text(text = "Available groups")
+            Text(
+                text = "Available groups",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .align(Alignment.Start)
+            )
+
             Column {
                 groups.forEach{
                     group ->
@@ -141,7 +148,18 @@ fun GroupItem(group: Group,navController: NavController,userViewModel: UserViewM
             .clickable { navController.navigate("groupDetail/${group.name}") },
         elevation = CardDefaults.cardElevation(4.dp),
     ) {
-            Text(text = group.name, fontWeight = FontWeight.ExtraBold)
+        Box(
+            contentAlignment = Alignment.Center, // Centraliza o conteúdo no meio do card
+            modifier = Modifier.fillMaxSize() // Garante que o Box ocupe todo o espaço do card
+        ) {
+            Text(
+                text = group.name,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center,
+            )
+        }
+
 
     }
     

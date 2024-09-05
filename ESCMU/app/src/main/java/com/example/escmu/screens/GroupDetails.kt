@@ -1,6 +1,7 @@
 package com.example.escmu.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -33,8 +34,6 @@ fun GroupDetail(
     }
 
     groupViewModel.getUsersByGroup(group)
-    var user = userViewModel.userData.value
-    var members = groupViewModel.userList
 
 
     LaunchedEffect(groupViewModel.isLoading) {
@@ -43,6 +42,9 @@ fun GroupDetail(
             groupViewModel.isLoading = false
         }
     }
+    var user = userViewModel.userData.value
+    var members = groupViewModel.userList.toList()
+
 
     Column(
         modifier = Modifier
@@ -55,23 +57,27 @@ fun GroupDetail(
         members.forEach { user ->
             MemberItem(user)
         }
+
         Text(text = group)
 
-        Button(onClick = { FirebaseAuth.getInstance().currentUser?.email?.let {
-            userViewModel.addGroup(
-                it,group)
-        } }) {
-            Text(text = "Enter group")
+        Row {
+            Button(onClick = { FirebaseAuth.getInstance().currentUser?.email?.let {
+                userViewModel.addGroup(
+                    it,group)
+            } }) {
+                Text(text = "Enter group")
 
+            }
+
+            Button(onClick = { FirebaseAuth.getInstance().currentUser?.email?.let {
+                userViewModel.leaveGroup(
+                    it)
+            } }) {
+                Text(text = "Leave group")
+
+            }
         }
 
-        Button(onClick = { FirebaseAuth.getInstance().currentUser?.email?.let {
-            userViewModel.leaveGroup(
-                it)
-        } }) {
-            Text(text = "Leave group")
-
-        }
     }
 
 

@@ -1,15 +1,20 @@
 package com.example.escmu.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -26,6 +31,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -148,21 +154,70 @@ fun ExpenseDetail(
 
 @Composable
 fun ExpenseDetails(expense: Expense){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
-        if (expense != null) {
-            Text(text = expense.id)
-            Text(text = expense.date)
-            Text(text = expense.value)
-            Text(text = expense.image)
-            AsyncImage(model = expense.image, contentDescription ="teste" )
-            val location = GetCurrentLocation()
+
+        expense?.let {
+            OutlinedTextField(
+                value = it.name,
+                onValueChange = {},
+                label = { Text("Name") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = it.idGroup,
+                onValueChange = {},
+                label = { Text("Group") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = it.date,
+                onValueChange = {},
+                label = { Text("Data") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = it.value,
+                onValueChange = {},
+                label = { Text("Valor") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+            AsyncImage(
+                model = it.image,
+                contentDescription = "Imagem da despesa",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
         }
     }
+
+
 }
 
 

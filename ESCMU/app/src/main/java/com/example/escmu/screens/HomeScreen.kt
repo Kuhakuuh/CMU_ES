@@ -93,6 +93,7 @@ fun HomeScreen(
         navController.navigate(Screens.Login.screen)
     }
 
+
     val name = rememberSaveable { mutableStateOf("") }
     val place = rememberSaveable { mutableStateOf("") }
     val value = rememberSaveable { mutableStateOf("") }
@@ -191,6 +192,7 @@ fun HomeScreen(
                 groupViewModel = groupViewModel,
                 onNameChange = {name.value=it},
                 onValueChange ={value.value = it} ,
+                onDataChange = {it},
                 onClick ={
                     viewModel.addExpense(
                         Expense(
@@ -270,7 +272,7 @@ fun ExpenseItem(expense: Expense,navController: NavController) {
             }
             // Data na parte inferior
             Text(
-                text = "05-09-2024",
+                text = expense.date,
                 fontWeight = FontWeight.Light,
                 fontSize = 16.sp,
                 modifier = Modifier.align(Alignment.End)
@@ -343,6 +345,7 @@ fun AddExpenseDialog(
     groupViewModel: GroupViewModel,
     onNameChange:(String) -> Unit,
     onValueChange: (String) -> Unit,
+    onDataChange: (String) -> Unit,
     onClick: (String) -> Unit,
     onDismiss:()->Unit
 
@@ -401,13 +404,14 @@ fun AddExpenseDialog(
                                 )
 
                                 Spacer(modifier = Modifier.height(20.dp))
-
+                               var data =CustomDatePicker()
                                 OutlinedTextField(
                                     label = { Text(text = "Data") },
-                                    value = CustomDatePicker(),
-                                    onValueChange = {},
+                                    value = data,
+                                    onValueChange = onDataChange,
                                     readOnly = true
                                 )
+
                                 Spacer(modifier = Modifier.height(20.dp))
 
 
