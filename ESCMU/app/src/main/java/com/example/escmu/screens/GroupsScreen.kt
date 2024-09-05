@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
@@ -22,7 +21,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -33,22 +31,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.escmu.database.models.Expense
+import com.example.escmu.Screens
 import com.example.escmu.database.models.Group
 import com.example.escmu.viewmodels.AppViewModelProvider
 import com.example.escmu.viewmodels.GroupViewModel
 import com.example.escmu.viewmodels.HomeViewModel
+import com.example.escmu.viewmodels.UserViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun GroupsScreen(
     navController: NavController,
-    viewModel: GroupViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: GroupViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    homeViewModel:HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
+
 ) {
+    if (FirebaseAuth.getInstance().currentUser == null){
+        navController.navigate(Screens.Login.screen)
+    }
+
+
     val name = rememberSaveable { mutableStateOf("") }
     val groups by viewModel.groupData.observeAsState(initial = emptyList())
     Box(modifier = Modifier.fillMaxSize()) {
@@ -65,16 +72,21 @@ fun GroupsScreen(
                 name = name.value,
                 onNameChange = {name.value = it},
                 onClick = {viewModel.addGroup(
-                    Group(idUser = "123dadad",
+                    Group(
                         name = name.value,
-                        totalValue = 0.0)
+                        totalValue = 0.0,
+                        )
                 )}
             )
             Text(text = "Available groups")
             Column {
                 groups.forEach{
                     group ->
-                    GroupItem(group = group,{})
+                    GroupItem(
+                        group = group,
+                        navController,
+                        userViewModel
+                    )
                 }
             }
             
@@ -121,15 +133,15 @@ fun GroupFrom(
     }
 }
 @Composable
-fun GroupItem(group: Group,onClick: () -> Unit){
+fun GroupItem(group: Group,navController: NavController,userViewModel: UserViewModel){
     ElevatedCard(
         modifier = Modifier
             .aspectRatio(2f)
             .padding(8.dp)
-            .clickable { onClick },
+            .clickable { navController.navigate("groupDetail/${group.name}") },
         elevation = CardDefaults.cardElevation(4.dp),
     ) {
-        Text(text = group.name, fontWeight = FontWeight.ExtraBold)
+            Text(text = group.name, fontWeight = FontWeight.ExtraBold)
 
     }
     

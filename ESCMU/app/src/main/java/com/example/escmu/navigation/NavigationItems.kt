@@ -34,15 +34,11 @@ data class NavigationItems(
                 route = Screens.Login.screen
             ),
             NavigationItems(
-                label = "SignUp",
-                icon = Icons.Filled.Edit,
-                route = Screens.SignUp.screen
-            ),
-            NavigationItems(
                 label = "Profile",
                 icon = Icons.Filled.Person,
                 route = Screens.Profile.screen
             )
+
 
         )
     }

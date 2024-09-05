@@ -1,5 +1,6 @@
 package com.example.escmu.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -19,6 +20,9 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM expenses ")
     fun getExpense(): Flow<List<Expense>>
+
+    @Query("SELECT * FROM expenses WHERE id=:id ")
+    fun getExpenseById(id: String): LiveData<Expense>
 
     @Query("DELETE FROM  expenses")
     suspend fun deleteAllExpenses()

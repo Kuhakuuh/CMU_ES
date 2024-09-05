@@ -12,7 +12,7 @@ data class Expense(
     val name:String,
     val date: String,
     val place:String,
-    val image:String,
+    var image:String,
     val value:String,
     val idUser:String,
     val idGroup:String

@@ -50,27 +50,32 @@ fun LoginScreen(
     val password = rememberSaveable { mutableStateOf("") }
 
     //Verifica se o user já esta login
-    val auth:FirebaseAuth=FirebaseAuth.getInstance()
-    if (auth.currentUser != null){
-        navController.navigate(Screens.Home.screen)
+    // val auth:FirebaseAuth=FirebaseAuth.getInstance()
+    //if (auth.currentUser != null){
+    //   navController.navigate(Screens.Home.screen)
+    //}
+
+    Column(modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        LoginForm( navController, email = email.value, password = password.value,
+            onEmailChange = { email.value = it },
+            onPasswordChange = { password.value = it },
+            onLoginClick = {
+                try {
+                    loginViewModel.signIn(email.value,password.value)
+                    userViewModel.getUserByEmail(email.value)
+                    navController.navigate(Screens.Home.screen)
+
+                }catch (e:Exception){
+                    Log.d("Login","Fail to login")
+
+                }
+            }
+        )
+
     }
-
-
-    LoginForm( navController, email = email.value, password = password.value,
-        onEmailChange = { email.value = it },
-        onPasswordChange = { password.value = it },
-        onLoginClick = {
-            try {
-                loginViewModel.signIn(email.value,password.value)
-                userViewModel.getUserByEmail(email.value)
-                navController.navigate(Screens.Home.screen)
-
-            }catch (e:Exception){
-                Log.d("Login","Fail to login")
-
-            }
-            }
-    )
 
 }
 
@@ -87,21 +92,7 @@ fun LoginForm(
 ) {
     val context = LocalContext.current
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        ClickableText(
-            text = AnnotatedString("Sign up here"),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(20.dp),
-            onClick = { navController.navigate(Screens.SignUp.screen){popUpTo(0)} },
-            style = TextStyle(
-                fontSize = 14.sp,
 
-                textDecoration = TextDecoration.Underline,
-
-                )
-        )
-    }
     Column(
         modifier = Modifier.padding(20.dp),
         verticalArrangement = Arrangement.Center,
@@ -148,6 +139,23 @@ fun LoginForm(
                 Text(text = "Login")
             }
         }
-
     }
+
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        ClickableText(
+            text = AnnotatedString("Sign up here"),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(20.dp),
+            onClick = { navController.navigate(Screens.SignUp.screen){popUpTo(0)} },
+            style = TextStyle(
+                fontSize = 14.sp,
+
+                textDecoration = TextDecoration.Underline,
+
+                )
+        )
+    }
+
 }

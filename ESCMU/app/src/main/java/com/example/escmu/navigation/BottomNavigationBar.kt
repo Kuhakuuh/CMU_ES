@@ -16,12 +16,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.escmu.Screens
+import com.example.escmu.screens.ExpenseDetail
+import com.example.escmu.screens.GroupDetail
 import com.example.escmu.screens.GroupsScreen
 import com.example.escmu.screens.HomeScreen
 import com.example.escmu.screens.LoginScreen
@@ -88,6 +89,7 @@ fun BottomNavigationBar() {
             composable(Screens.Home.screen) {
                 //call our composable screens here
                 HomeScreen( navController = navController)
+                //HomeScreenPage(navController = navController)
             }
             composable(Screens.Profile.screen) {
                 //call our composable screens here
@@ -101,6 +103,18 @@ fun BottomNavigationBar() {
             }
             composable(Screens.Groups.screen) {
                 GroupsScreen( navController = navController)
+            }
+            composable("expenseDetail/{expenseID}"){ backStackEntry ->
+                val expenseID = backStackEntry.arguments?.getString("expenseID")
+                if (expenseID != null) {
+                    ExpenseDetail(expenseId = expenseID,navController)
+                }
+            }
+            composable("groupDetail/{group}"){ backStackEntry ->
+                val groupID = backStackEntry.arguments?.getString("group")
+                if (groupID != null) {
+                    GroupDetail(group = groupID,navController)
+                }
             }
 
         }

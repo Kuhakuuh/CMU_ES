@@ -56,9 +56,15 @@ android {
 }
 
 dependencies {
+    //Mapbox
+    implementation("com.mapbox.maps:android:11.6.0")
+    implementation("com.mapbox.extension:maps-compose:11.6.0")
 
+    implementation ("androidx.compose.material3:material3:1.2.1")
+    implementation("io.coil-kt:coil-compose:2.0.0")
 
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
     //Navigation
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -94,6 +100,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
+    implementation("com.google.firebase:firebase-storage")
+
+    //Location
+    implementation ("com.google.android.gms:play-services-location:21.1.0")
+    implementation ("com.google.maps.android:maps-compose:2.9.0")
+    implementation ("com.google.android.gms:play-services-maps:18.2.0")
+    implementation ("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")

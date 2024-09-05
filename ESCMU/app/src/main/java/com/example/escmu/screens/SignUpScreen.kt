@@ -60,8 +60,8 @@ fun SignUpScreen(
         onRegisterClick = {
             try {
                 signUpViewModel.createAccount(email.value,password.value)
-                signUpViewModel.addUserToFirestore(User(name=name.value, password = password.value, email = email.value))
-                userViewModel.addUser(User(name=name.value, password = password.value, email = email.value))
+                signUpViewModel.addUserToFirestore(User(name=name.value, password = password.value, email = email.value, group = ""))
+                userViewModel.addUser(User(name=name.value, password = password.value, email = email.value, group = ""))
                 navController.navigate(Screens.Home.screen)
 
             }catch (e:Exception){

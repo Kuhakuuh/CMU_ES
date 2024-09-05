@@ -1,5 +1,6 @@
 package com.example.escmu.database.repository
 
+import androidx.lifecycle.LiveData
 import com.example.escmu.database.models.Expense
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +17,8 @@ interface ExpenseRepository {
      * Insert an expense in the data source
      */
     suspend fun insertExpense(expense: Expense)
+
+    suspend fun getExpenseById(id: String): LiveData<Expense>
 
     /**
      * Delete an expense from the data source

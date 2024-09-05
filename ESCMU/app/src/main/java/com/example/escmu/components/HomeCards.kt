@@ -28,8 +28,8 @@ import com.example.escmu.R
 
 @Composable
 fun OverviewCards(
-    expense:Int,
-    revenue:Int,
+    expense:String,
+    revenue:String,
     ){
 
     Row(

@@ -45,6 +45,7 @@ class SignUpViewModel(
             "name" to user.name,
             "email" to user.email  ,
             "password" to user.password,
+            "group" to user.group
         )
         viewModelScope.launch {
             firestore.collection("Users")

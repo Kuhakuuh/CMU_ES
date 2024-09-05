@@ -91,19 +91,3 @@ fun Context.createImageFile(): File {
     return image
 }
 
-@Composable
-fun ImagePicker(onImageSelected: (Uri) -> Unit) {
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? -> uri?.let { onImageSelected(it) } }
-    )
-    Button(
-        onClick = { launcher.launch("image/*") }
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.baseline_search_24),
-            contentDescription = "up"
-        )
-
-    }
-}

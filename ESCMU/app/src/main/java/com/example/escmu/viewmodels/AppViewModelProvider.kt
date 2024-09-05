@@ -15,14 +15,16 @@ object AppViewModelProvider {
         }
 
         initializer {
-            HomeViewModel(myApplication().container.expenseRepository)
+            HomeViewModel(
+                myApplication().container.expenseRepository,
+                myApplication().container.userRepository,)
         }
 
         initializer {
             GroupViewModel(myApplication().container.groupRepository)
         }
         initializer {
-            LoginViewModel()
+            LoginViewModel(myApplication().container.userRepository)
         }
         initializer {
             SignUpViewModel(myApplication().container.userRepository)

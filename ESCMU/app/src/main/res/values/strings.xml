@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ESCMU</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoia3V1aGFrdTEiLCJhIjoiY20wcGUzMmtxMDA2MTJ2c2NyMzJpa3JqbSJ9.8pWt4SlOpdgaT3LJ4Zcf5w</string>
 </resources>
