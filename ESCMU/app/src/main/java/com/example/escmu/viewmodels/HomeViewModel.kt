@@ -188,6 +188,9 @@ class HomeViewModel(
             id = expenseData["id"] as? String ?: "",
             name = expenseData["name"] as? String ?: "",
             place = expenseData["place"] as? String ?: "",
+            lat = expenseData["lat"] as? String ?: "",
+            lng = expenseData["lng"] as? String ?: "",
+
             date = expenseData["date"] as? String ?: "",
             value = expenseData["value"] as? String ?: "",
             username = expenseData["username"] as? String ?: "",
@@ -217,6 +220,8 @@ class HomeViewModel(
                                     "date" to expense.date  ,
                                     "value" to expense.value,
                                     "place" to expense.place,
+                                    "lat" to expense.lat,
+                                    "lng" to expense.lng,
                                     "username" to expense.username,
                                     "image" to expense.image,
                                     "idUser" to expense.idUser,

@@ -56,6 +56,10 @@ android {
 }
 
 dependencies {
+    //Swipe
+    implementation ("com.google.accompanist:accompanist-swiperefresh:0.24.13-rc")
+
+
     //Mapbox
     implementation("com.mapbox.maps:android:11.6.0")
     implementation("com.mapbox.extension:maps-compose:11.6.0")

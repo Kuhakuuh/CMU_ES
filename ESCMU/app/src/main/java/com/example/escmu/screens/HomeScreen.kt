@@ -2,14 +2,12 @@
 
 package com.example.escmu.screens
 
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,17 +19,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
@@ -40,7 +35,6 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -65,22 +59,23 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import com.example.escmu.Screens
 import com.example.escmu.components.AddExpense
 import com.example.escmu.components.CustomDatePicker
-import com.example.escmu.components.DropDown
 import com.example.escmu.components.GetCurrentLocation
 import com.example.escmu.components.OverviewCards
 import com.example.escmu.components.SinglePhotoPicker
 import com.example.escmu.viewmodels.AppViewModelProvider
 import com.example.escmu.viewmodels.HomeViewModel
 import com.example.escmu.database.models.Expense
-import com.example.escmu.database.models.Group
 import com.example.escmu.retrofit.RetrofitHelper.getLocation
 import com.example.escmu.viewmodels.GroupViewModel
 import com.example.escmu.viewmodels.UserViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
+
 
 @Composable
 fun HomeScreen(
@@ -88,9 +83,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
     groupViewModel: GroupViewModel= viewModel(factory = AppViewModelProvider.Factory),
     userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
-){
+) {
 
-    if (FirebaseAuth.getInstance().currentUser == null){
+    if (FirebaseAuth.getInstance().currentUser == null) {
         navController.navigate(Screens.Login.screen)
     }
 
@@ -102,76 +97,101 @@ fun HomeScreen(
     val value = rememberSaveable { mutableStateOf("") }
     val data = rememberSaveable { mutableStateOf("") }
     val currentUser = rememberSaveable { mutableStateOf("") }
-
-
+    val lat = rememberSaveable { mutableStateOf("") }
+    val lng = rememberSaveable { mutableStateOf("") }
     val expenses by viewModel.expenseData.observeAsState(initial = emptyList())
     val context = LocalContext.current
     val location = GetCurrentLocation()
 
-    var isLoadingPlace by remember {mutableStateOf(true)}
+    var isRefreshing by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isRefreshing) {
+        if (isRefreshing) {
+            delay(2000)
+            isRefreshing = false
+        }
+    }
+
+
+    if (location != null) {
+        lat.value = location.first.toString()
+        lng.value = location.second.toString()
+
+    }
+    var isLoadingPlace by remember { mutableStateOf(true) }
 
     val user = userViewModel.userData.value
-    if (user!=null){
+    if (user != null) {
         currentUser.value = user.id
-        username.value= user.name
+        username.value = user.name
     }
     //viewModel.getExpenseFromFirebase()
-    LaunchedEffect(isLoadingPlace ){
-        if (location!=null){
-            place.value = getLocation(location.first,location.second)?.address?.village ?: ""
-            isLoadingPlace=false
+    LaunchedEffect(isLoadingPlace) {
+        if (location != null) {
+            place.value = getLocation(location.first, location.second)?.address?.village ?: ""
+            isLoadingPlace = false
         }
-       }
+    }
 
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = {
+            isRefreshing = true
+            viewModel.getExpenseFromFirebase()
+            viewModel.getAllExpenses()
+        }
+    ) {
 
-    Box(modifier = Modifier.fillMaxSize()){
-            Column(
-                verticalArrangement = Arrangement.spacedBy(32.dp, Alignment.Top),
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp)
-            ) {
-               
-                //Get current location: place
-                if (location != null) {
-                    LaunchedEffect(true ){
-                        var address=getLocation(location.first,location.second)
-                        if (address != null) {
-                            place.value= address.address.village
-                        }
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(32.dp, Alignment.Top),
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+        ) {
+
+            //Get current location: place
+            if (location != null) {
+                LaunchedEffect(true) {
+                    var address = getLocation(location.first, location.second)
+                    if (address != null) {
+                        place.value = address.address.village
                     }
                 }
-
-                //Mudar para as funções que vao ser criadas
-                OverviewCards(expense = getTotalValue(viewModel), revenue ="0" )
-                Text(text = "Recent group expenses",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(5.dp)
-                )
-                if(expenses.isNotEmpty()){
-                    Column {
-                        expenses.forEach{
-                                expense ->
-                            ExpenseItem(
-                                expense = expense,
-                                navController
-                            )
-                        }
-                    }
-                }else{
-                    GhostCards()
-                }
-
             }
 
-            AddExpense(modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(12.dp),
-                onClick = {viewModel.addingExpense()})
+            //Mudar para as funções que vao ser criadas
+            OverviewCards(expense = getTotalValue(viewModel), revenue = "0")
+            Text(
+                text = "Recent group expenses",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(5.dp)
+            )
+            if (expenses.isNotEmpty()) {
+                Column {
+                    expenses.forEach { expense ->
+                        ExpenseItem(
+                            expense = expense,
+                            navController
+                        )
+                    }
+                }
+            } else {
+                GhostCards()
+            }
 
         }
+
+        AddExpense(modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .padding(12.dp),
+            onClick = { viewModel.addingExpense() })
+
+    }
+}
 
     if (viewModel.loadingExpenses) {
         Box(
@@ -206,6 +226,8 @@ fun HomeScreen(
                             idUser = currentUser.value,
                             username=username.value,
                             idGroup =viewModel.selectedGroup,
+                            lat = lat.value,
+                            lng=lng.value,
                             image = "",
                             date = data.value,
                             value = value.value,
@@ -240,7 +262,7 @@ fun ExpenseItem(expense: Expense,navController: NavController) {
         elevation = CardDefaults.cardElevation(4.dp),
     ) {
         Text(
-            text = "Username",
+            text = expense.username,
             fontWeight = FontWeight.Light,
             fontSize = 16.sp,
             modifier = Modifier

@@ -105,6 +105,8 @@ class UserViewModel(
             name = expenseData["name"] as? String ?: "",
             username = expenseData["username"] as? String ?: "",
             place = expenseData["place"] as? String ?: "",
+            lat = expenseData["lat"] as? String ?: "",
+            lng = expenseData["lng"] as? String ?: "",
             date = expenseData["date"] as? String ?: "",
             value = expenseData["value"] as? String ?: "",
             image = expenseData["image"] as? String ?: "",

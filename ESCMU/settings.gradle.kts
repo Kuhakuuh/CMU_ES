@@ -3,7 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-        // Mapbox Maven repository
+
 
 
     }
@@ -13,6 +13,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        //MapBox maven repository
         maven {
             url = uri("https://api.mapbox.com/downloads/v2/releases/maven")
             // Do not change the username below. It should always be "mapbox" (not your username).

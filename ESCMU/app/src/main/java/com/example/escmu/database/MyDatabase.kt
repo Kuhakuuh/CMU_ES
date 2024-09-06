@@ -13,7 +13,7 @@ import com.example.escmu.database.models.User
 
 @Database(
     entities = [User::class, Expense::class, Group::class],
-    version =16,
+    version =17,
     exportSchema = false
 )
 
