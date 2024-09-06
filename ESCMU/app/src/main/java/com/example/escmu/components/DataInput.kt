@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,10 +35,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomDatePicker():String {
-    // Estado para armazenar a data selecionada como String
-    var selectedDate by remember { mutableStateOf("") }
-
+fun CustomDatePicker(data:MutableState<String>,onDataChange: (String) -> Unit) {
     // Obter a data atual
     val calendar = Calendar.getInstance()
 
@@ -53,7 +51,7 @@ fun CustomDatePicker():String {
             // Atualiza o Calendar com a data selecionada
             calendar.set(year, month, dayOfMonth)
             // Converte a data para String e atualiza o estado
-            selectedDate = dateFormatter.format(calendar.time)
+            data.value = dateFormatter.format(calendar.time)
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -67,6 +65,11 @@ fun CustomDatePicker():String {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            OutlinedTextField(
+                value = data.value,
+                onValueChange =onDataChange,
+                readOnly = true
+            )
             // Botão para abrir o DatePickerDialog
             Button(onClick = {
                 datePickerDialog.show()
@@ -76,5 +79,4 @@ fun CustomDatePicker():String {
             }
         }
     }
-    return selectedDate
 }

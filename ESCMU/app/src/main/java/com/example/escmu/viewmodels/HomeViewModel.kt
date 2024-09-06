@@ -190,7 +190,7 @@ class HomeViewModel(
             place = expenseData["place"] as? String ?: "",
             date = expenseData["date"] as? String ?: "",
             value = expenseData["value"] as? String ?: "",
-
+            username = expenseData["username"] as? String ?: "",
             image = expenseData["image"] as? String ?: "",
             idUser = expenseData["idUser"] as? String ?: "",
             idGroup = expenseData["idGroup"] as? String ?: "")
@@ -217,7 +217,7 @@ class HomeViewModel(
                                     "date" to expense.date  ,
                                     "value" to expense.value,
                                     "place" to expense.place,
-
+                                    "username" to expense.username,
                                     "image" to expense.image,
                                     "idUser" to expense.idUser,
                                     "idGroup" to expense.idGroup,
@@ -227,12 +227,9 @@ class HomeViewModel(
                                     .document(expense.id)
                                     .set(expenseFirestone)
 
-                                //Add expense to offline bd
-
+                                //getExpenseFromFirebaseByGroup(expense.idGroup)
                                 getExpenseFromFirebase()
 
-                                //getExpenseFromFirebaseByGroup(expense.idGroup)
-                                loadingExpenses = false
 
                                 Toast.makeText(
                                     context,
@@ -240,6 +237,7 @@ class HomeViewModel(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                        loadingExpenses = false
 
                     }
 
@@ -250,7 +248,7 @@ class HomeViewModel(
         }
     }
 
-    private fun getAllExpenses(){
+     fun getAllExpenses(){
         viewModelScope.launch {
             try {
                 expenseRepository.getExpenseStream().collect{

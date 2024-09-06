@@ -3,14 +3,21 @@ package com.example.escmu.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.escmu.Screens
@@ -33,10 +40,8 @@ fun GroupDetail(
         navController.navigate(Screens.Login.screen)
     }
 
-    groupViewModel.getUsersByGroup(group)
-
-
     LaunchedEffect(groupViewModel.isLoading) {
+        groupViewModel.getUsersByGroup(group)
         if (groupViewModel.isLoading) {
             delay(1000)
             groupViewModel.isLoading = false
@@ -51,14 +56,20 @@ fun GroupDetail(
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ) {
-        if (user != null) {
-            Text(text = "USER:${user.email}")
-        }
+        Text(
+            text = "Group:  $group",
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+
+        Text(text = "Group Members",
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(5.dp)
+        )
         members.forEach { user ->
             MemberItem(user)
         }
 
-        Text(text = group)
 
         Row {
             Button(onClick = { FirebaseAuth.getInstance().currentUser?.email?.let {
@@ -84,8 +95,18 @@ fun GroupDetail(
 }
 @Composable
 fun MemberItem(user:User){
-    Column() {
-
-        Text(text = user.name)
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
+    ) {
+        Text(
+            text = user.name,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(16.dp)
+        )
     }
+
+
 }

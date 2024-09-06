@@ -46,6 +46,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -93,12 +94,15 @@ fun HomeScreen(
         navController.navigate(Screens.Login.screen)
     }
 
+    viewModel.getAllExpenses()
 
     val name = rememberSaveable { mutableStateOf("") }
+    val username = rememberSaveable { mutableStateOf("") }
     val place = rememberSaveable { mutableStateOf("") }
     val value = rememberSaveable { mutableStateOf("") }
     val data = rememberSaveable { mutableStateOf("") }
     val currentUser = rememberSaveable { mutableStateOf("") }
+
 
     val expenses by viewModel.expenseData.observeAsState(initial = emptyList())
     val context = LocalContext.current
@@ -109,8 +113,9 @@ fun HomeScreen(
     val user = userViewModel.userData.value
     if (user!=null){
         currentUser.value = user.id
+        username.value= user.name
     }
-    viewModel.getExpenseFromFirebase()
+    //viewModel.getExpenseFromFirebase()
     LaunchedEffect(isLoadingPlace ){
         if (location!=null){
             place.value = getLocation(location.first,location.second)?.address?.village ?: ""
@@ -128,7 +133,7 @@ fun HomeScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp)
             ) {
-                Text(text = "Teste user ${viewModel.group.value}")
+               
                 //Get current location: place
                 if (location != null) {
                     LaunchedEffect(true ){
@@ -187,6 +192,7 @@ fun HomeScreen(
                 name=name.value,
                 value =value.value ,
                 place=place.value,
+                date=data,
                 idUser = currentUser.value,
                 homeViewModel = viewModel,
                 groupViewModel = groupViewModel,
@@ -198,6 +204,7 @@ fun HomeScreen(
                         Expense(
                             name=name.value,
                             idUser = currentUser.value,
+                            username=username.value,
                             idGroup =viewModel.selectedGroup,
                             image = "",
                             date = data.value,
@@ -236,7 +243,9 @@ fun ExpenseItem(expense: Expense,navController: NavController) {
             text = "Username",
             fontWeight = FontWeight.Light,
             fontSize = 16.sp,
-            modifier = Modifier.align(Alignment.Start).padding(6.dp)
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(6.dp)
         )
         Column(
             modifier = Modifier
@@ -341,6 +350,7 @@ fun AddExpenseDialog(
     place:String,
     value:String,
     idUser:String,
+    date:MutableState<String>,
     homeViewModel: HomeViewModel,
     groupViewModel: GroupViewModel,
     onNameChange:(String) -> Unit,
@@ -380,14 +390,7 @@ fun AddExpenseDialog(
                                     fontWeight = FontWeight.Bold,
                                     style = TextStyle(fontSize = 40.sp)
                                 )
-
-
-                                OutlinedTextField(
-                                    label = { Text(text = "User") },
-                                    value = idUser,
-                                    onValueChange = { },
-                                    readOnly = true
-                                )
+                                Spacer(modifier = Modifier.height(20.dp))
 
                                 OutlinedTextField(
                                     label = { Text(text = "Name") },
@@ -404,13 +407,7 @@ fun AddExpenseDialog(
                                 )
 
                                 Spacer(modifier = Modifier.height(20.dp))
-                               var data =CustomDatePicker()
-                                OutlinedTextField(
-                                    label = { Text(text = "Data") },
-                                    value = data,
-                                    onValueChange = onDataChange,
-                                    readOnly = true
-                                )
+                                CustomDatePicker(date,onDataChange)
 
                                 Spacer(modifier = Modifier.height(20.dp))
 

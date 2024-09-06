@@ -103,6 +103,7 @@ class UserViewModel(
         return Expense(
             id = expenseData["id"] as? String ?: "",
             name = expenseData["name"] as? String ?: "",
+            username = expenseData["username"] as? String ?: "",
             place = expenseData["place"] as? String ?: "",
             date = expenseData["date"] as? String ?: "",
             value = expenseData["value"] as? String ?: "",

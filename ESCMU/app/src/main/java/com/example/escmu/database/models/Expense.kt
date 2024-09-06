@@ -14,6 +14,7 @@ data class Expense(
     val place:String,
     var image:String,
     val value:String,
+    val username:String,
     val idUser:String,
     val idGroup:String
 )
