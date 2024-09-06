@@ -56,9 +56,9 @@ fun GroupsScreen(
         navController.navigate(Screens.Login.screen)
     }
 
-
     val name = rememberSaveable { mutableStateOf("") }
     val groups by viewModel.groupData.observeAsState(initial = emptyList())
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Top,

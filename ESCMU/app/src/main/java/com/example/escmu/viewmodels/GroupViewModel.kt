@@ -16,6 +16,7 @@ import com.example.escmu.database.repository.ExpenseRepository
 import com.example.escmu.database.repository.GroupRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -99,7 +100,11 @@ class GroupViewModel(
         }
     }
 
-    private fun loadGroupsFromFirebase(){
+     fun loadGroupsFromFirebase(){
+         viewModelScope.launch {
+             groupRepository.deleteAllGroups()
+             delay(1000)
+         }
         val firestore = FirebaseFirestore.getInstance()
         val expenseCollection = firestore.collection("Groups")
         expenseCollection.get()

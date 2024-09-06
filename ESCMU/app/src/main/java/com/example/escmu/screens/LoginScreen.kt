@@ -55,9 +55,7 @@ fun LoginScreen(
     //   navController.navigate(Screens.Home.screen)
     //}
 
-    Column(modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+
 
         LoginForm( navController, email = email.value, password = password.value,
             onEmailChange = { email.value = it },
@@ -75,7 +73,7 @@ fun LoginScreen(
             }
         )
 
-    }
+
 
 }
 
@@ -93,8 +91,24 @@ fun LoginForm(
     val context = LocalContext.current
 
 
+    Box(modifier = Modifier.fillMaxSize()) {
+        ClickableText(
+            text = AnnotatedString("Sign up here"),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(20.dp),
+            onClick = { navController.navigate(Screens.SignUp.screen){popUpTo(0)} },
+            style = TextStyle(
+                fontSize = 14.sp,
+
+                textDecoration = TextDecoration.Underline,
+
+                )
+        )
+    }
+
     Column(
-        modifier = Modifier.padding(20.dp),
+        modifier = Modifier.padding(20.dp).fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -139,23 +153,6 @@ fun LoginForm(
                 Text(text = "Login")
             }
         }
-    }
-
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        ClickableText(
-            text = AnnotatedString("Sign up here"),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(20.dp),
-            onClick = { navController.navigate(Screens.SignUp.screen){popUpTo(0)} },
-            style = TextStyle(
-                fontSize = 14.sp,
-
-                textDecoration = TextDecoration.Underline,
-
-                )
-        )
     }
 
 }

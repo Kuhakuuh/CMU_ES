@@ -51,7 +51,7 @@ fun OverviewCards(
             ) {
                 Column(modifier = Modifier.align(Alignment.Center)) {
                         Text(
-                            text = "Expenses" ,
+                            text = "Group" ,
                             fontWeight= FontWeight.Bold,
                             fontSize = 30.sp)
 
@@ -83,7 +83,7 @@ fun OverviewCards(
             ) {
                 Column(modifier = Modifier.align(Alignment.Center)) {
                     Text(
-                        text = "Revenues" ,
+                        text = "Personal" ,
                         fontWeight= FontWeight.Bold,
                         fontSize = 30.sp)
 
@@ -100,6 +100,7 @@ fun OverviewCards(
                 }
             }
         }
+
     }
 
 }

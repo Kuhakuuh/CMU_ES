@@ -29,11 +29,6 @@ data class NavigationItems(
                 route = Screens.Groups.screen
             ),
             NavigationItems(
-                label = "Login",
-                icon = Icons.Filled.Add,
-                route = Screens.Login.screen
-            ),
-            NavigationItems(
                 label = "Profile",
                 icon = Icons.Filled.Person,
                 route = Screens.Profile.screen

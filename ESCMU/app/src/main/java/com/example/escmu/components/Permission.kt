@@ -284,7 +284,7 @@ fun CustomDialogLocation(
 
                 //.........................Button : OK button
                 val cornerRadius = 16.dp
-                val gradientColors = listOf(Color(0xFF0D203F), Color(0xFF242E49))
+                val gradientColors = listOf(Color(0xFF5A7CB4), Color(0xFF8586AA))
                 val roundedCornerShape = RoundedCornerShape(topStart = 30.dp,bottomEnd = 30.dp)
 
                 Button(
@@ -312,7 +312,7 @@ fun CustomDialogLocation(
                         Text(
                             text ="Enable",
                             fontSize = 20.sp,
-                            //color = Color.White
+                            color = Color.White
                         )
                     }
                 }

@@ -61,7 +61,9 @@ fun ProfileScreen(
     viewModel.getUser()
     viewModel.cleanExpenseList()
     val currentUser = viewModel.userData.value
-    //viewModel.getUserExpenses(currentUser.id)
+    if (currentUser != null) {
+        viewModel.getUserExpenses(currentUser.id)
+    }
 
     var periodIndex by remember {
         mutableStateOf(0)
@@ -115,7 +117,7 @@ fun ProfileScreen(
                 }
             }
             1 -> {
-                ProfileMyExpenses(viewModel)
+                ProfileMyExpenses(viewModel,navController)
             }
         }
     }
@@ -156,9 +158,9 @@ fun ProfileInfo(currentUser:User,viewModel: UserViewModel,navController: NavCont
 }
 
 @Composable
-fun ProfileMyExpenses(viewModel: UserViewModel){
+fun ProfileMyExpenses(viewModel: UserViewModel,navController: NavController){
     viewModel.expenseList.forEach{ expense ->
-        expenseItem(expense = expense)
+        ExpenseItem(expense = expense,navController)
     }
 
 }
@@ -166,6 +168,7 @@ fun ProfileMyExpenses(viewModel: UserViewModel){
 
 @Composable
 fun expenseItem(expense: Expense){
+
         Column {
             Text(text = "User expenses")
             Text(text = expense.name)

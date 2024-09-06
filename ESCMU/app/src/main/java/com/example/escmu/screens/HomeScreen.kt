@@ -2,6 +2,9 @@
 
 package com.example.escmu.screens
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
@@ -63,6 +66,8 @@ import com.example.escmu.Screens
 import com.example.escmu.components.AddExpense
 import com.example.escmu.components.CustomDatePicker
 import com.example.escmu.components.GetCurrentLocation
+import com.example.escmu.components.MyService
+import com.example.escmu.components.NotificationHandler
 import com.example.escmu.components.OverviewCards
 import com.example.escmu.components.SinglePhotoPicker
 import com.example.escmu.viewmodels.AppViewModelProvider
@@ -71,12 +76,16 @@ import com.example.escmu.database.models.Expense
 import com.example.escmu.retrofit.RetrofitHelper.getLocation
 import com.example.escmu.viewmodels.GroupViewModel
 import com.example.escmu.viewmodels.UserViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -88,7 +97,7 @@ fun HomeScreen(
     if (FirebaseAuth.getInstance().currentUser == null) {
         navController.navigate(Screens.Login.screen)
     }
-
+    //Get all expenses
     viewModel.getAllExpenses()
 
     val name = rememberSaveable { mutableStateOf("") }
@@ -103,8 +112,11 @@ fun HomeScreen(
     val context = LocalContext.current
     val location = GetCurrentLocation()
 
-    var isRefreshing by remember { mutableStateOf(false) }
 
+    val postNotificationPermission = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+    //SwipeRefresh
+    var isRefreshing by remember { mutableStateOf(false) }
     LaunchedEffect(isRefreshing) {
         if (isRefreshing) {
             delay(2000)
@@ -164,7 +176,7 @@ fun HomeScreen(
             }
 
             //Mudar para as funções que vao ser criadas
-            OverviewCards(expense = getTotalValue(viewModel), revenue = "0")
+            OverviewCards(expense = getTotalValue(viewModel).toString(), revenue = (0.0).toString())
             Text(
                 text = "Recent group expenses",
                 fontWeight = FontWeight.Bold,
@@ -243,13 +255,13 @@ fun HomeScreen(
 
 }
 
-fun getTotalValue(viewModel: HomeViewModel):String{
+fun getTotalValue(viewModel: HomeViewModel):Double{
     var total =0.0
     viewModel.expenseData.value?.forEach {
             expense ->
         total += expense.value.toDouble()
     }
-    return total.toString()
+    return total
 }
 
 @Composable
