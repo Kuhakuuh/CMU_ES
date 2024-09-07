@@ -52,9 +52,6 @@ fun GroupsScreen(
     userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
 ) {
-    if (FirebaseAuth.getInstance().currentUser == null){
-        navController.navigate(Screens.Login.screen)
-    }
 
     val name = rememberSaveable { mutableStateOf("") }
     val groups by viewModel.groupData.observeAsState(initial = emptyList())

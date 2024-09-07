@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.escmu.database.models.Expense
 import com.example.escmu.database.models.Group
 import com.example.escmu.database.models.User
+import com.example.escmu.database.repository.ExpenseRepository
 import com.example.escmu.database.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class UserViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val expenseRepository: ExpenseRepository
 ):ViewModel() {
 
 
@@ -156,6 +158,7 @@ class UserViewModel(
                 .addOnFailureListener { e ->
                     Log.e("Firestore", "Erro ao adicionar user: ${e.message}", e)
                 }.await()
+            
         }
 
     }

@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import com.example.escmu.R
 import com.example.escmu.database.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
@@ -28,8 +29,8 @@ class MyService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Send a notification
-        sendNotification("Service Notification", "Service is Up user:$currentUser.")
-        monitorGroupDeletions()
+        sendNotification("Group Observation", "Service is Up.")
+        observeGroups()
         return START_STICKY // Service will restart if terminated
     }
     private fun parseUser(userData: Map<String, Any>): User {
@@ -43,7 +44,7 @@ class MyService : Service() {
             )
     }
 
-    private fun monitorGroupDeletions() {
+    private fun observeGroups() {
         val firestore = FirebaseFirestore.getInstance()
         val currentUser = FirebaseAuth.getInstance().currentUser
 
@@ -88,7 +89,7 @@ class MyService : Service() {
 
         // Build the notification
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)  // Your notification icon
+            .setSmallIcon(R.drawable.baseline_notifications_24)  // Your notification icon
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)  // Set priority

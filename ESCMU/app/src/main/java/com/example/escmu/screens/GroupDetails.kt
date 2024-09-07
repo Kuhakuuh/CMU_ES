@@ -72,21 +72,41 @@ fun GroupDetail(
 
 
         Row {
-            Button(onClick = { FirebaseAuth.getInstance().currentUser?.email?.let {
-                userViewModel.addGroup(
-                    it,group)
-            } }) {
-                Text(text = "Enter group")
+            if (user != null) {
+                if(user.group == ""){
+                    Button(
+                        onClick ={
+                            FirebaseAuth.getInstance().currentUser?.email?.let {
+                        userViewModel.addGroup(
+                            it,group)}
+
+                            navController.navigate(Screens.Groups.screen)
+                        }
+                    ) {
+                        Text(text = "Enter group")
+
+                    }
+                } else{
+                    Button(
+                        onClick = {
+                            FirebaseAuth.getInstance().currentUser?.email?.let {
+                        userViewModel.leaveGroup(
+                            it)
+                    }
+                            navController.navigate(Screens.Groups.screen)
+                        }) {
+                        Text(text = "Leave group")
+
+                    }
+                }
 
             }
 
-            Button(onClick = { FirebaseAuth.getInstance().currentUser?.email?.let {
-                userViewModel.leaveGroup(
-                    it)
-            } }) {
-                Text(text = "Leave group")
-
-            }
+        }
+        
+        Button(onClick = { /*TODO*/ }) {
+            Text(text = "Close group")
+            
         }
 
     }

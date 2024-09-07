@@ -11,7 +11,9 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
 
         initializer {
-            UserViewModel(myApplication().container.userRepository)
+            UserViewModel(
+                myApplication().container.userRepository,
+                myApplication().container.expenseRepository)
         }
 
         initializer {

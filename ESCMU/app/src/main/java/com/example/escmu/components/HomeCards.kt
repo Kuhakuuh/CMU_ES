@@ -83,7 +83,7 @@ fun OverviewCards(
             ) {
                 Column(modifier = Modifier.align(Alignment.Center)) {
                     Text(
-                        text = "Personal" ,
+                        text = "Individual" ,
                         fontWeight= FontWeight.Bold,
                         fontSize = 30.sp)
 

@@ -199,6 +199,16 @@ fun ExpenseDetails(expense: Expense){
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
+                value = it.username,
+                onValueChange = {},
+                label = { Text("user") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
                 value = it.date,
                 onValueChange = {},
                 label = { Text("Data") },

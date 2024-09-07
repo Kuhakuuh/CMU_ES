@@ -98,6 +98,7 @@ fun HomeScreen(
         navController.navigate(Screens.Login.screen)
     }
     //Get all expenses
+    viewModel.getExpenseFromFirebase()
     viewModel.getAllExpenses()
 
     val name = rememberSaveable { mutableStateOf("") }
@@ -176,7 +177,7 @@ fun HomeScreen(
             }
 
             //Mudar para as funções que vao ser criadas
-            OverviewCards(expense = getTotalValue(viewModel).toString(), revenue = (0.0).toString())
+            OverviewCards(expense = getTotalValue(viewModel).toString(), revenue = (getTotalValue(viewModel)/expenses.size).toString())
             Text(
                 text = "Recent group expenses",
                 fontWeight = FontWeight.Bold,
@@ -197,11 +198,23 @@ fun HomeScreen(
 
         }
 
-        AddExpense(modifier = Modifier
-            .align(Alignment.BottomEnd)
-            .padding(12.dp),
-            onClick = { viewModel.addingExpense() })
+            AddExpense(modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(12.dp),
+                onClick = {
+                    if (user != null){
+                        if (user.group !=""){
+                            viewModel.addingExpense()
+                        }else{
+                            Toast.makeText(
+                                context,
+                                "Select a group first!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
+                    }
+                })
     }
 }
 
@@ -441,6 +454,7 @@ fun AddExpenseDialog(
                                 )
 
                                 Spacer(modifier = Modifier.height(20.dp))
+
                                 CustomDatePicker(date,onDataChange)
 
                                 Spacer(modifier = Modifier.height(20.dp))
@@ -520,14 +534,14 @@ fun AddExpenseDialog(
                                 }
                             }
 
-                            Text(text = "This is a full-screen dialog")
+
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(onClick = { onDismiss() }) {
                                 Icon(
                                     imageVector = Icons.Default.ArrowBack,
                                     contentDescription = "Leave"
                                 )
-                                Text(text = "Leave Dialog")
+                                Text(text = "Leave")
 
                             }
                         }

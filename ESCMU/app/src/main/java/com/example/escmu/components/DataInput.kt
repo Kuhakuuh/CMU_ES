@@ -66,6 +66,7 @@ fun CustomDatePicker(data:MutableState<String>,onDataChange: (String) -> Unit) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             OutlinedTextField(
+                label = { Text(text = "Date") },
                 value = data.value,
                 onValueChange =onDataChange,
                 readOnly = true
@@ -75,7 +76,7 @@ fun CustomDatePicker(data:MutableState<String>,onDataChange: (String) -> Unit) {
                 datePickerDialog.show()
             }) {
 
-                Text("Selecionar Data")
+                Text("Select Date")
             }
         }
     }

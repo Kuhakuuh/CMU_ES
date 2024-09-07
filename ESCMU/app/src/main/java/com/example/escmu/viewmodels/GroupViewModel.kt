@@ -142,6 +142,19 @@ class GroupViewModel(
 
             )
     }
+    private fun removeGroupFromFirebase(groupId:String){
+        firestore.collection("Groups")
+            .document(groupId)
+            .delete()
+            .addOnSuccessListener{
+                Log.d("Group","Group deleted!")
+            }.addOnFailureListener {
+                Log.d("Group","Error deleting user!")
+            }
+
+    }
+
+
 
     private fun getGroups(){
         viewModelScope.launch {
