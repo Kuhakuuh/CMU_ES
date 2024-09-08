@@ -18,8 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class MyService : Service() {
 
     private val CHANNEL_ID = "MyNotificationChannel"
-    private val currentUser= FirebaseAuth.getInstance().currentUser?.email
-    private val firestore = FirebaseFirestore.getInstance()
+
     override fun onCreate() {
         super.onCreate()
         // Create the notification channel when the service is created
@@ -30,18 +29,10 @@ class MyService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Send a notification
         sendNotification("Group Observation", "Service is Up.")
-        observeGroups()
-        return START_STICKY // Service will restart if terminated
-    }
-    private fun parseUser(userData: Map<String, Any>): User {
-        return User(
-            id = userData["id"] as? String ?: "",
-            name = userData["name"] as? String ?: "",
-            email = userData["email"] as? String ?: "",
-            password = userData["password"] as? String ?: "",
-            group = userData["group"] as? String ?: "",
 
-            )
+        observeGroups()
+
+        return START_STICKY // Service will restart if terminated
     }
 
     private fun observeGroups() {
@@ -68,6 +59,7 @@ class MyService : Service() {
 
                                     // Verifique se o grupo do usuário removido é o mesmo do currentUser
                                     if (currentGroupId == removedGroupId) {
+                                        Log.d("Notification","Notification send!")
                                         // Enviar notificação
                                         sendNotification("ESCMU", "O seu grupo fui eliminado")
                                     }

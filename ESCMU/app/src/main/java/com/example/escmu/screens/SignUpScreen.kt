@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.escmu.Screens
+import com.example.escmu.WindowSize
 import com.example.escmu.database.models.User
 import com.example.escmu.viewmodels.AppViewModelProvider
 import com.example.escmu.viewmodels.SignUpViewModel
@@ -41,6 +42,7 @@ import com.example.escmu.viewmodels.UserViewModel
 
 @Composable
 fun SignUpScreen(
+    windowSize: WindowSize,
     navController: NavController,
     signUpViewModel: SignUpViewModel = viewModel(factory = AppViewModelProvider.Factory),
     userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
@@ -50,27 +52,42 @@ fun SignUpScreen(
     val password = rememberSaveable { mutableStateOf("") }
     val username = rememberSaveable { mutableStateOf("") }
     val name = rememberSaveable { mutableStateOf("") }
+    val phonenumber = rememberSaveable { mutableStateOf("") }
 
-
-    RegisterForm( navController, email = email.value, password = password.value,name=name.value, username = username.value,
+    RegisterForm(
+        navController,
+        email = email.value,
+        password = password.value,
+        name=name.value,
+        username = username.value,
+        phonenumber = phonenumber.value,
         onEmailChange = { email.value = it },
         onPasswordChange = { password.value = it },
         onUsernameChange = { username.value = it },
+        onPhonenumberChange = { phonenumber.value = it },
         onNameChange = { name.value = it },
         onRegisterClick = {
             try {
                 signUpViewModel.createAccount(email.value,password.value)
-                signUpViewModel.addUserToFirestore(User(name=name.value, password = password.value, email = email.value, group = ""))
-                userViewModel.addUser(User(name=name.value, password = password.value, email = email.value, group = ""))
+                signUpViewModel.addUserToFirestore(
+                    User(name=name.value,
+                        password = password.value,
+                        email = email.value,
+                        group = "",
+                        phonenumber = phonenumber.value))
+                userViewModel.addUser(
+                    User(name=name.value,
+                        password = password.value,
+                        email = email.value,
+                        group = "",
+                        phonenumber = phonenumber.value))
                 navController.navigate(Screens.Home.screen)
 
             }catch (e:Exception){
                 Log.d("SignUp","Fail to signUp")
             }
-
         }
     )
-
 
 }
 
@@ -83,9 +100,11 @@ fun RegisterForm(
     password: String,
     name: String,
     username:String,
+    phonenumber:String,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onUsernameChange: (String) -> Unit,
+    onPhonenumberChange: (String) -> Unit,
     onNameChange: (String) -> Unit,
     onRegisterClick: (String) -> Unit
 ) {
@@ -119,8 +138,18 @@ fun RegisterForm(
         TextField(
             label = { Text(text = "Username") },
             value = username,
-            onValueChange = onUsernameChange
+            onValueChange = onUsernameChange,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal
+            )
         )
+
+        TextField(
+            label = { Text(text = "Phone") },
+            value = phonenumber,
+            onValueChange = onPhonenumberChange,
+        )
+
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
             label = { Text(text = "Name") },

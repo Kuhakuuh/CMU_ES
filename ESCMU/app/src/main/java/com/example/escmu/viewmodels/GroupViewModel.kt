@@ -93,7 +93,7 @@ class GroupViewModel(
             try {
                 addGroupToFirebase(group)
                 loadGroupsFromFirebase()
-
+                getGroups()
             }catch (e:Exception){
                 Log.d("Group","Fail to add Groups")
             }
@@ -139,10 +139,11 @@ class GroupViewModel(
             email = userData["email"] as? String ?: "",
             password = userData["password"] as? String ?: "",
             group = userData["group"] as? String ?: "",
+            phonenumber = userData["phonenumber"] as? String ?: ""
 
             )
     }
-    private fun removeGroupFromFirebase(groupId:String){
+     fun removeGroupFromFirebase(groupId:String){
         firestore.collection("Groups")
             .document(groupId)
             .delete()
@@ -156,7 +157,7 @@ class GroupViewModel(
 
 
 
-    private fun getGroups(){
+   fun getGroups(){
         viewModelScope.launch {
             try {
                 groupRepository.getGroupStream().collect{

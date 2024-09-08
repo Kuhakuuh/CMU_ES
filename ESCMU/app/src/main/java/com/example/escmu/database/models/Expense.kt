@@ -17,6 +17,7 @@ data class Expense(
     var image:String,
     val value:String,
     val username:String,
+    val phonenumber:String,
     val idUser:String,
     val idGroup:String
 )

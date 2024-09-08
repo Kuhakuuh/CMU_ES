@@ -32,15 +32,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val notificationChannel = NotificationChannel(
-            "notification_channel_id",
-            "Notification name",
-            NotificationManager.IMPORTANCE_HIGH
-        )
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        // Setting up the channel
-        notificationManager.createNotificationChannel(notificationChannel)
         setContent {
             ESCMUTheme {
                 // A surface container using the 'background' color from the theme
@@ -57,4 +49,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 

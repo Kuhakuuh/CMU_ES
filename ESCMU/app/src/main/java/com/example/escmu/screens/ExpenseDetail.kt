@@ -1,8 +1,11 @@
 package com.example.escmu.screens
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,9 +39,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,6 +53,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.escmu.R
 import com.example.escmu.Screens
+import com.example.escmu.WindowSize
 import com.example.escmu.components.GetCurrentLocation
 import com.example.escmu.database.models.Expense
 import com.example.escmu.viewmodels.AppViewModelProvider
@@ -67,6 +75,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun ExpenseDetail(
+    windowSize: WindowSize,
     expenseId:String,
     navController: NavController,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
@@ -163,14 +172,11 @@ fun ExpenseDetail(
     }
 
 
-
-
-
 }
 
 @Composable
 fun ExpenseDetails(expense: Expense){
-
+    val ctx = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -186,8 +192,8 @@ fun ExpenseDetails(expense: Expense){
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth()
             )
-
             Spacer(modifier = Modifier.height(16.dp))
+
             OutlinedTextField(
                 value = it.idGroup,
                 onValueChange = {},
@@ -205,6 +211,29 @@ fun ExpenseDetails(expense: Expense){
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth()
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    val u = Uri.parse("tel:${it.phonenumber}")
+                    val i = Intent(Intent.ACTION_DIAL, u)
+                    try {
+                        ctx.startActivity(i)
+                    } catch (s: SecurityException) {
+                        Toast
+                            .makeText(ctx, "An error occurred", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
+            ) {
+                Text(
+                    text = it.phonenumber,
+                    fontWeight = FontWeight.Bold
+                )
+
+            }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -244,7 +273,6 @@ fun ExpenseDetails(expense: Expense){
     }
 
 }
-
 
 
 @Composable

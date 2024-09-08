@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.escmu.Screens
+import com.example.escmu.WindowSize
 import com.example.escmu.database.models.User
 import com.example.escmu.viewmodels.AppViewModelProvider
 import com.example.escmu.viewmodels.GroupViewModel
@@ -30,6 +34,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun GroupDetail(
+    windowSize: WindowSize,
     group:String,
     navController: NavController,
     groupViewModel: GroupViewModel = viewModel(factory = AppViewModelProvider.Factory),
@@ -56,6 +61,14 @@ fun GroupDetail(
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ) {
+
+        Button(onClick = { navController.popBackStack() },
+            modifier = Modifier.align(Alignment.CenterHorizontally) ) {
+            Icon(
+                imageVector = Icons.Sharp.KeyboardArrowLeft,
+                contentDescription ="Back" )
+
+        }
         Text(
             text = "Group:  $group",
             fontWeight = FontWeight.Bold,
@@ -104,8 +117,14 @@ fun GroupDetail(
 
         }
         
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Close group")
+        Button(
+            onClick = {
+                groupViewModel.removeGroupFromFirebase(groupId = group)
+                navController.navigate(Screens.Groups.screen)
+
+            }
+        ) {
+            Text(text = "Delete group")
             
         }
 

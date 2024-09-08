@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.escmu.Screens
+import com.example.escmu.WindowSize
 import com.example.escmu.database.models.Group
 import com.example.escmu.viewmodels.AppViewModelProvider
 import com.example.escmu.viewmodels.GroupViewModel
@@ -46,12 +47,14 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun GroupsScreen(
+    windowSize: WindowSize,
     navController: NavController,
     viewModel: GroupViewModel = viewModel(factory = AppViewModelProvider.Factory),
     homeViewModel:HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
     userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
 ) {
+
 
     val name = rememberSaveable { mutableStateOf("") }
     val groups by viewModel.groupData.observeAsState(initial = emptyList())
@@ -74,7 +77,9 @@ fun GroupsScreen(
                         name = name.value,
                         totalValue = 0.0,
                         )
-                )}
+                )
+                navController.navigate(Screens.Groups.screen)
+                }
             )
             Text(
                 text = "Available groups",

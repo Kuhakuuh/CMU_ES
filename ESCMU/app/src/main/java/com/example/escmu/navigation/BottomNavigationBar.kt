@@ -21,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.escmu.Screens
+import com.example.escmu.WindowSize
 import com.example.escmu.screens.ExpenseDetail
 import com.example.escmu.screens.GroupDetail
 import com.example.escmu.screens.GroupsScreen
@@ -32,7 +33,7 @@ import com.example.escmu.screens.SignUpScreen
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(windowSize: WindowSize) {
 
     var navigationSelectedItem by remember {
         mutableStateOf(0)
@@ -88,32 +89,32 @@ fun BottomNavigationBar() {
 
             composable(Screens.Home.screen) {
                 //call our composable screens here
-                HomeScreen( navController = navController)
+                HomeScreen( windowSize,navController = navController)
                 //HomeScreenPage(navController = navController)
             }
             composable(Screens.Profile.screen) {
                 //call our composable screens here
-                ProfileScreen( navController = navController)
+                ProfileScreen( windowSize,navController = navController)
             }
             composable(Screens.Login.screen) {
-                LoginScreen( navController = navController)
+                LoginScreen( windowSize,navController = navController)
             }
             composable(Screens.SignUp.screen) {
-                SignUpScreen( navController = navController)
+                SignUpScreen( windowSize,navController = navController)
             }
             composable(Screens.Groups.screen) {
-                GroupsScreen( navController = navController)
+                GroupsScreen( windowSize,navController = navController)
             }
             composable("expenseDetail/{expenseID}"){ backStackEntry ->
                 val expenseID = backStackEntry.arguments?.getString("expenseID")
                 if (expenseID != null) {
-                    ExpenseDetail(expenseId = expenseID,navController)
+                    ExpenseDetail(windowSize,expenseId = expenseID,navController)
                 }
             }
             composable("groupDetail/{group}"){ backStackEntry ->
                 val groupID = backStackEntry.arguments?.getString("group")
                 if (groupID != null) {
-                    GroupDetail(group = groupID,navController)
+                    GroupDetail(windowSize,group = groupID,navController)
                 }
             }
 

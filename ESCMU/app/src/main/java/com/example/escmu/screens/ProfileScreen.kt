@@ -10,10 +10,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -45,15 +47,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.escmu.Screens
+import com.example.escmu.WindowSize
 import com.example.escmu.components.SinglePhotoPicker
 import com.example.escmu.components.TabRowProfile
 import com.example.escmu.database.models.Expense
 import com.example.escmu.database.models.User
 import com.example.escmu.viewmodels.AppViewModelProvider
 import com.example.escmu.viewmodels.UserViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun ProfileScreen(
+    windowSize: WindowSize,
     navController: NavController,
     viewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
     ){
@@ -112,6 +117,12 @@ fun ProfileScreen(
         // Conteúdo baseado na aba selecionada
         when (periodIndex) {
             0 -> {
+                if (currentUser==null){
+                    Button(onClick = { navController.navigate(Screens.Login.screen)}) {
+                        Text(text = "Login")
+                    }
+                }
+
                 if (currentUser != null) {
                     ProfileInfo(currentUser = currentUser, viewModel = viewModel, navController = navController)
                 }
@@ -126,6 +137,8 @@ fun ProfileScreen(
 
 @Composable
 fun ProfileInfo(currentUser:User,viewModel: UserViewModel,navController: NavController){
+
+
     Column(
         modifier = Modifier
             .padding(5.dp)
@@ -146,7 +159,6 @@ fun ProfileInfo(currentUser:User,viewModel: UserViewModel,navController: NavCont
                 viewModel.deleteAllUsers()
                 navController.navigate(Screens.Login.screen)
 
-
             }catch (e:Exception){
 
             }
@@ -160,23 +172,13 @@ fun ProfileInfo(currentUser:User,viewModel: UserViewModel,navController: NavCont
 @Composable
 fun ProfileMyExpenses(viewModel: UserViewModel,navController: NavController){
     viewModel.expenseList.forEach{ expense ->
-        ExpenseItem(expense = expense,navController)
+        ExpenseItem(
+            expense = expense,
+            navController, modifier = Modifier.aspectRatio(3f)
+        )
     }
 
 }
-
-
-@Composable
-fun expenseItem(expense: Expense){
-
-        Column {
-            Text(text = "User expenses")
-            Text(text = expense.name)
-            Text(text = expense.id)
-            Text(text = expense.place)
-        }
-}
-
 
 @Composable
 fun UserInfo(user: User) {
@@ -188,7 +190,10 @@ fun UserInfo(user: User) {
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        Icon(Icons.Outlined.Person, contentDescription = "icon")
+        Icon(
+            Icons.Outlined.Person,
+            contentDescription = "icon",
+            modifier = Modifier.size(100.dp))
 
         Text(
             text = user.name,

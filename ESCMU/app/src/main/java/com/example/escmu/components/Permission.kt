@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.escmu.R
 import com.example.escmu.navigation.BottomNavigationBar
+import com.example.escmu.rememberWindowSize
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.PermissionState
@@ -150,7 +151,8 @@ fun RequestPermission(
             ) { permissionState.launchPermissionRequest() }
         },
         content = {
-            BottomNavigationBar()
+            val windowSize = rememberWindowSize();
+            BottomNavigationBar(windowSize)
 
         }
     )
@@ -180,7 +182,7 @@ fun Content(showButton: Boolean = true, onClick: () -> Unit) {
         if (enableLocation.value) {
             CustomDialogLocation(
                 title = "Turn On Location Service",
-                desc = ".\nGive this app a permission to proceed. If it doesn't work, then you'll have to do it manually from the settings.",
+                desc = "\nGive this app a permission to proceed. If it doesn't work, then you'll have to do it manually from the settings.",
                 enableLocation,
                 onClick
             )

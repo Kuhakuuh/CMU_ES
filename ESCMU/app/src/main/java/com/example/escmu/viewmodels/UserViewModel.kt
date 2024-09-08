@@ -106,6 +106,7 @@ class UserViewModel(
             id = expenseData["id"] as? String ?: "",
             name = expenseData["name"] as? String ?: "",
             username = expenseData["username"] as? String ?: "",
+            phonenumber = expenseData["phonenumber"] as? String ?: "",
             place = expenseData["place"] as? String ?: "",
             lat = expenseData["lat"] as? String ?: "",
             lng = expenseData["lng"] as? String ?: "",
@@ -170,6 +171,8 @@ class UserViewModel(
             email = userData["email"] as? String ?: "",
             password = userData["password"] as? String ?: "",
             group = userData["group"] as? String ?: "",
+            phonenumber = userData["phonenumber"] as? String ?: ""
+
 
         )
     }

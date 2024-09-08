@@ -52,6 +52,7 @@ class HomeViewModel(
     var inspectedExpense:LiveData<Expense> = _inspectedExpense
 
     var isLoading by mutableStateOf(true)
+    var isRefreshing by mutableStateOf(false)
     var selectedGroup by mutableStateOf("")
     var loadingExpenses by mutableStateOf(false)
     var group = MutableLiveData("")
@@ -190,10 +191,10 @@ class HomeViewModel(
             place = expenseData["place"] as? String ?: "",
             lat = expenseData["lat"] as? String ?: "",
             lng = expenseData["lng"] as? String ?: "",
-
             date = expenseData["date"] as? String ?: "",
             value = expenseData["value"] as? String ?: "",
             username = expenseData["username"] as? String ?: "",
+            phonenumber = expenseData["phonenumber"] as? String ?: "",
             image = expenseData["image"] as? String ?: "",
             idUser = expenseData["idUser"] as? String ?: "",
             idGroup = expenseData["idGroup"] as? String ?: "")
@@ -223,6 +224,7 @@ class HomeViewModel(
                                     "lat" to expense.lat,
                                     "lng" to expense.lng,
                                     "username" to expense.username,
+                                    "phonenumber" to expense.phonenumber,
                                     "image" to expense.image,
                                     "idUser" to expense.idUser,
                                     "idGroup" to expense.idGroup,

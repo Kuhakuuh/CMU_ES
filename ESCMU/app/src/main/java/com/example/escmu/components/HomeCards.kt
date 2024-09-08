@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -21,13 +22,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.escmu.R
-
-
-
+import com.example.escmu.WindowSize
 
 
 @Composable
 fun OverviewCards(
+    modifier: Modifier,
     expense:String,
     revenue:String,
     ){
@@ -35,13 +35,11 @@ fun OverviewCards(
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
+            .padding(5.dp),
+        horizontalArrangement = Arrangement.Center
     ) {
         ElevatedCard(
-            modifier = Modifier
-                .weight(2f)
-                .aspectRatio(2f)
+            modifier = modifier
                 .padding(8.dp),
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
@@ -49,7 +47,10 @@ fun OverviewCards(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Column(modifier = Modifier.align(Alignment.Center)) {
+                Column(modifier=Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+
+                ) {
                         Text(
                             text = "Group" ,
                             fontWeight= FontWeight.Bold,
@@ -71,9 +72,7 @@ fun OverviewCards(
         }
 
         ElevatedCard(
-            modifier = Modifier
-                .weight(2f)
-                .aspectRatio(2f)
+            modifier = modifier
                 .padding(8.dp),
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
@@ -81,7 +80,9 @@ fun OverviewCards(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Column(modifier = Modifier.align(Alignment.Center)) {
+                Column(modifier=Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
                         text = "Individual" ,
                         fontWeight= FontWeight.Bold,

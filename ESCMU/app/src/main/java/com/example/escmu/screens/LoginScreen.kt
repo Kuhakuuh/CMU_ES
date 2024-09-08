@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.escmu.Screens
+import com.example.escmu.WindowSize
 import com.example.escmu.viewmodels.AppViewModelProvider
 import com.example.escmu.viewmodels.HomeViewModel
 import com.example.escmu.viewmodels.LoginViewModel
@@ -42,6 +44,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginScreen(
+    windowSize: WindowSize,
     navController: NavController,
     loginViewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory),
     userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
@@ -147,7 +150,7 @@ fun LoginForm(
                 },
                 shape = RoundedCornerShape(50.dp),
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .width(200.dp)
                     .height(50.dp)
             ) {
                 Text(text = "Login")
