@@ -62,9 +62,11 @@ fun ProfileScreen(
     navController: NavController,
     viewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
     ){
-    
+
+
     viewModel.getUser()
     viewModel.cleanExpenseList()
+
     val currentUser = viewModel.userData.value
     if (currentUser != null) {
         viewModel.getUserExpenses(currentUser.id)
@@ -202,6 +204,16 @@ fun UserInfo(user: User) {
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = user.email,
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = user.group,
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = user.phonenumber,
             style = MaterialTheme.typography.bodyLarge
         )
     }

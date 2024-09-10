@@ -64,6 +64,35 @@ class GroupViewModel(
 
 
     }
+    fun getTotalValueToGroup(viewModel: HomeViewModel,group: String): Double {
+        var total = 0.0
+        viewModel.expenseData.value?.forEach { expense ->
+            if (expense.idGroup == group){
+                total += expense.value.toDouble()
+            }
+        }
+        return total
+    }
+
+    fun totalValueGroup(group: String,total: Double) {
+        val firestore = FirebaseFirestore.getInstance()
+
+        val groupUpdates = hashMapOf(
+            "totalValue" to total,
+            )
+        viewModelScope.launch {
+            firestore.collection("Groups")
+                .document(group )
+                .update(groupUpdates as Map<String, Any>)
+                .addOnSuccessListener {
+                    Log.d("Group", "Total adicionado ao grupo $group")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Group", "Erro ao adicionar total: ${e.message}", e)
+                }.await()
+        }
+
+    }
 
 
     private fun addGroupToFirebase(group: Group){
@@ -152,7 +181,7 @@ class GroupViewModel(
             }.addOnFailureListener {
                 Log.d("Group","Error deleting user!")
             }
-
+        loadGroupsFromFirebase()
     }
 
 

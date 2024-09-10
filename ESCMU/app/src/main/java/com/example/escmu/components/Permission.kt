@@ -1,6 +1,7 @@
 package com.example.escmu.components
 
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -141,6 +142,7 @@ fun RequestPermission(
     rationaleMessage: String = "To use this app's functionalities, you need to give us the permission.",
 ) {
     val permissionState = rememberPermissionState(permission)
+    var permissionNotification = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
     HandleRequest(
         permissionState = permissionState,
@@ -182,7 +184,8 @@ fun Content(showButton: Boolean = true, onClick: () -> Unit) {
         if (enableLocation.value) {
             CustomDialogLocation(
                 title = "Turn On Location Service",
-                desc = "\nGive this app a permission to proceed. If it doesn't work, then you'll have to do it manually from the settings.",
+                desc = "\nAllow the permission to proceed." +
+                        " If it doesn't work, then go do it manually in settings.",
                 enableLocation,
                 onClick
             )
@@ -239,12 +242,13 @@ fun CustomDialogLocation(
         onDismissRequest = { enableLocation.value = false}
     ) {
         Box(
-            modifier = Modifier.padding(top = 20.dp, bottom = 20.dp)
+            modifier = Modifier
+                .padding(top = 20.dp, bottom = 20.dp)
                 // .width(300.dp)
                 // .height(164.dp)
                 .background(
                     color = MaterialTheme.colorScheme.onPrimary,
-                    shape = RoundedCornerShape(25.dp,5.dp,25.dp,5.dp)
+                    shape = RoundedCornerShape(25.dp, 5.dp, 25.dp, 5.dp)
                 )
                 .verticalScroll(rememberScrollState())
 
@@ -254,10 +258,6 @@ fun CustomDialogLocation(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-
-                //.........................Image: preview
-                //.........................Spacer
-                //.........................Text: title
                 Text(
                     text = title!!,
                     textAlign = TextAlign.Center,

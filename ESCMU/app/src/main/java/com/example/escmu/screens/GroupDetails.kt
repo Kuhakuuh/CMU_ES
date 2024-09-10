@@ -1,5 +1,7 @@
 package com.example.escmu.screens
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,12 +21,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.escmu.Screens
 import com.example.escmu.WindowSize
+import com.example.escmu.components.MyService
 import com.example.escmu.database.models.User
 import com.example.escmu.viewmodels.AppViewModelProvider
 import com.example.escmu.viewmodels.GroupViewModel
@@ -40,10 +44,7 @@ fun GroupDetail(
     groupViewModel: GroupViewModel = viewModel(factory = AppViewModelProvider.Factory),
     userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-
-    if (FirebaseAuth.getInstance().currentUser == null){
-        navController.navigate(Screens.Login.screen)
-    }
+    var context = LocalContext.current
 
     LaunchedEffect(groupViewModel.isLoading) {
         groupViewModel.getUsersByGroup(group)
@@ -89,10 +90,9 @@ fun GroupDetail(
                 if(user.group == ""){
                     Button(
                         onClick ={
-                            FirebaseAuth.getInstance().currentUser?.email?.let {
-                        userViewModel.addGroup(
-                            it,group)}
-
+                            userViewModel.userData.value?.let { userViewModel.addGroup(it.email,group) }
+                            userViewModel.getUserByEmail(email = user.email)
+                            restartService(context)
                             navController.navigate(Screens.Groups.screen)
                         }
                     ) {
@@ -102,11 +102,10 @@ fun GroupDetail(
                 } else{
                     Button(
                         onClick = {
-                            FirebaseAuth.getInstance().currentUser?.email?.let {
-                        userViewModel.leaveGroup(
-                            it)
-                    }
-                            navController.navigate(Screens.Groups.screen)
+                            userViewModel.userData.value?.let { userViewModel.leaveGroup(it.email) }
+                            userViewModel.getUserByEmail(user.email)
+                            restartService(context)
+                            navController.navigate(Screens.Home.screen)
                         }) {
                         Text(text = "Leave group")
 
@@ -130,7 +129,11 @@ fun GroupDetail(
 
     }
 
+}
 
+
+fun restartService(context:Context){
+    context.startService(Intent(context, MyService::class.java))
 }
 @Composable
 fun MemberItem(user:User){

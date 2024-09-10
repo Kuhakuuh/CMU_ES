@@ -122,7 +122,6 @@ class HomeViewModel(
                                 expenseRepository.insertExpense(expense)
                                 Log.d("Expense","expense add with success")
                             }
-
                         }
                     }
                 }
@@ -139,6 +138,7 @@ class HomeViewModel(
         }
 
         val firestore = FirebaseFirestore.getInstance()
+
         val expenseCollection = firestore.collection("Expenses")
         expenseCollection
             .whereEqualTo("idGroup", group)

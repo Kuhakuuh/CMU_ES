@@ -60,7 +60,7 @@ fun OverviewCards(
                     Row(
                         verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = expense.toString() ,
+                            text = expense,
                             fontWeight = FontWeight.Bold,
                             fontSize = 24.sp)
                         Spacer(modifier = Modifier.padding(5.dp))

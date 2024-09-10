@@ -8,9 +8,7 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import android.os.Build
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import com.example.escmu.R
-import com.example.escmu.database.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,46 +26,54 @@ class MyService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Send a notification
-        sendNotification("Group Observation", "Service is Up.")
-
+        var email = FirebaseAuth.getInstance().currentUser?.email
+        sendNotification("Group Observation", "Service is Up.User:$email")
         observeGroups()
 
         return START_STICKY // Service will restart if terminated
     }
 
     private fun observeGroups() {
-        val firestore = FirebaseFirestore.getInstance()
+
         val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser!=null){
+            Log.d("Service","User:$currentUser")
 
-        // Pega o grupo do currentUser
-        firestore.collection("Users")
-            .document(currentUser?.email ?: "")
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val currentGroupId = document.getString("group")
+            val firestore = FirebaseFirestore.getInstance()
+            // Pega o grupo do currentUser
+            firestore.collection("Users")
+                .document(currentUser?.email ?: "")
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val currentGroupId = document.getString("group")
+                        firestore.collection("Groups")
+                            .addSnapshotListener { snapshots, e ->
+                                if (e != null || currentGroupId == null) {
+                                    return@addSnapshotListener
+                                }
 
-                    firestore.collection("Groups")
-                        .addSnapshotListener { snapshots, e ->
-                            if (e != null || currentGroupId == null) {
-                                return@addSnapshotListener
-                            }
+                                for (dc in snapshots!!.documentChanges) {
+                                    if (dc.type == DocumentChange.Type.REMOVED) {
+                                        val removedGroupId = dc.document.getString("name")
+                                        val total = dc.document.getDouble("totalValue")
 
-                            for (dc in snapshots!!.documentChanges) {
-                                if (dc.type == DocumentChange.Type.REMOVED) {
-                                    val removedGroupId = dc.document.getString("name")
-
-                                    // Verifique se o grupo do usuário removido é o mesmo do currentUser
-                                    if (currentGroupId == removedGroupId) {
-                                        Log.d("Notification","Notification send!")
-                                        // Enviar notificação
-                                        sendNotification("ESCMU", "O seu grupo fui eliminado")
+                                        // Verifique se o grupo do usuário removido é o mesmo do currentUser
+                                        if (currentGroupId == removedGroupId) {
+                                            Log.d("Notification", "Notification send!")
+                                            // Enviar notificação
+                                            sendNotification("ESCMU", "O seu grupo fui eliminado\n Total:$total")
+                                        }
                                     }
                                 }
                             }
-                        }
+                    }
                 }
-            }
+
+
+        }else{
+            Log.d("Service","User:$currentUser")
+        }
     }
 
 

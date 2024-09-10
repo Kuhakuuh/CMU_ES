@@ -10,7 +10,6 @@ class OfflineExpenseRepository(
     private val expenseDao: ExpenseDao
 ):ExpenseRepository {
     override fun getExpenseStream(): Flow<List<Expense>> = expenseDao.getExpense()
-
     override suspend fun insertExpense(expense: Expense) = expenseDao.upsertExpense(expense)
     override suspend fun getExpenseById(id: String) = expenseDao.getExpenseById(id)
 

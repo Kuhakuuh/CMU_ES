@@ -100,9 +100,6 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
 
-
-
-
     //Get all expenses
     viewModel.getExpenseFromFirebase()
     viewModel.getAllExpenses()
@@ -144,6 +141,7 @@ fun HomeScreen(
         username.value = user.name
         phonenumber.value = user.phonenumber
     }
+
     //viewModel.getExpenseFromFirebase()
     LaunchedEffect(isLoadingPlace) {
         if (location != null) {
@@ -186,8 +184,8 @@ fun HomeScreen(
                 if (windowSize.width > WindowType.Compact) {
                     OverviewCards(
                         modifier=Modifier.height(200.dp).width(200.dp),
-                        expense = getTotalValue(viewModel).toString(),
-                        revenue = (getTotalValue(viewModel) / expenses.size).toString()
+                        expense = String.format("%.2f",(getTotalValue(viewModel))),
+                        revenue = String.format("%.2f",(getTotalValue(viewModel) / expenses.size))
                     )
 
                 }else{
@@ -195,8 +193,8 @@ fun HomeScreen(
                         modifier = Modifier
                             .weight(2f)
                             .aspectRatio(2f),
-                        expense = getTotalValue(viewModel).toString(),
-                        revenue = (getTotalValue(viewModel) / expenses.size).toString()
+                        expense = String.format("%.2f",(getTotalValue(viewModel))),
+                        revenue = String.format("%.2f",(getTotalValue(viewModel) / expenses.size))
                     )
                 }
 
@@ -368,7 +366,6 @@ fun ExpenseItem(expense: Expense, navController: NavController,modifier: Modifie
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Linha principal com o valor e o nome
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -381,9 +378,7 @@ fun ExpenseItem(expense: Expense, navController: NavController,modifier: Modifie
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 24.sp,
                     color = Color.Red,
-
                     )
-
                 // Nome
                 Text(
                     text = expense.name,

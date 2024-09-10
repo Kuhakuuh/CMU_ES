@@ -96,6 +96,8 @@ fun GroupsScreen(
                         navController,
                         userViewModel
                     )
+                    viewModel.totalValueGroup(group.name,
+                        viewModel.getTotalValueToGroup(homeViewModel,group.name))
                 }
             }
             

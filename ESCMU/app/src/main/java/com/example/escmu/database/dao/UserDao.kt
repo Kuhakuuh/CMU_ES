@@ -11,17 +11,12 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
-
     @Upsert
     suspend fun upsertUser(userModel: User)
-
     @Delete
     suspend fun deleteUser(userModel: User)
-
-
     @Query("SELECT * FROM users ")
     fun getUser(): Flow<List<User>>
-
     @Query("DELETE FROM  users")
     suspend fun deleteAllUsers()
 }

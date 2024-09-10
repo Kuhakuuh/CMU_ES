@@ -25,14 +25,11 @@ class AppDataContainer(private val context: Context): AppContainer
     override val userRepository: UserRepository by lazy {
         OfflineUserRepository(MyDatabase.getInstance(context).userDao)
     }
-
     override val expenseRepository: ExpenseRepository by lazy {
         OfflineExpenseRepository(MyDatabase.getInstance(context).expenseDao)
     }
-
     override val groupRepository: GroupRepository by lazy {
         OfflineGroupRepository(MyDatabase.getInstance(context).groupDao)
     }
-
 }
 

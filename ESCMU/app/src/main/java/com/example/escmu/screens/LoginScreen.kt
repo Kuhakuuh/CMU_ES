@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -103,7 +104,7 @@ fun LoginForm(
             onClick = { navController.navigate(Screens.SignUp.screen){popUpTo(0)} },
             style = TextStyle(
                 fontSize = 14.sp,
-
+                color = Color.White,
                 textDecoration = TextDecoration.Underline,
 
                 )

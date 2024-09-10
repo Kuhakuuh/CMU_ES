@@ -43,6 +43,7 @@ class SignUpViewModel(
         val userFirestone = hashMapOf(
             "id" to user.id,
             "name" to user.name,
+            "phonenumber" to user.phonenumber,
             "email" to user.email  ,
             "password" to user.password,
             "group" to user.group

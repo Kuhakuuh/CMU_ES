@@ -31,9 +31,6 @@ object AppViewModelProvider {
         initializer {
             SignUpViewModel(myApplication().container.userRepository)
         }
-
-
-
     }
 }
 

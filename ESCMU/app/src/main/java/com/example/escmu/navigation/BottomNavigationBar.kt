@@ -45,7 +45,7 @@ fun BottomNavigationBar(windowSize: WindowSize) {
      */
     val navController = rememberNavController()
 
-//scaffold to hold our bottom navigation Bar
+    //scaffold to hold our bottom navigation Bar
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -89,32 +89,32 @@ fun BottomNavigationBar(windowSize: WindowSize) {
 
             composable(Screens.Home.screen) {
                 //call our composable screens here
-                HomeScreen( windowSize,navController = navController)
+                HomeScreen(windowSize, navController = navController)
                 //HomeScreenPage(navController = navController)
             }
             composable(Screens.Profile.screen) {
                 //call our composable screens here
-                ProfileScreen( windowSize,navController = navController)
+                ProfileScreen(windowSize, navController = navController)
             }
             composable(Screens.Login.screen) {
-                LoginScreen( windowSize,navController = navController)
+                LoginScreen(windowSize, navController = navController)
             }
             composable(Screens.SignUp.screen) {
-                SignUpScreen( windowSize,navController = navController)
+                SignUpScreen(windowSize, navController = navController)
             }
             composable(Screens.Groups.screen) {
-                GroupsScreen( windowSize,navController = navController)
+                GroupsScreen(windowSize, navController = navController)
             }
-            composable("expenseDetail/{expenseID}"){ backStackEntry ->
+            composable("expenseDetail/{expenseID}") { backStackEntry ->
                 val expenseID = backStackEntry.arguments?.getString("expenseID")
                 if (expenseID != null) {
-                    ExpenseDetail(windowSize,expenseId = expenseID,navController)
+                    ExpenseDetail(windowSize, expenseId = expenseID, navController)
                 }
             }
-            composable("groupDetail/{group}"){ backStackEntry ->
+            composable("groupDetail/{group}") { backStackEntry ->
                 val groupID = backStackEntry.arguments?.getString("group")
                 if (groupID != null) {
-                    GroupDetail(windowSize,group = groupID,navController)
+                    GroupDetail(windowSize, group = groupID, navController)
                 }
             }
 

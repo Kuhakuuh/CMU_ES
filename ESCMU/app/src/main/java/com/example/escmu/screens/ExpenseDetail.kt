@@ -80,9 +80,7 @@ fun ExpenseDetail(
     navController: NavController,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
-    if (FirebaseAuth.getInstance().currentUser == null){
-        navController.navigate(Screens.Login.screen)
-    }
+
 
     viewModel.getExpenseFromFirebaseById(expenseId)
     val expense = viewModel.inspectedExpense.value

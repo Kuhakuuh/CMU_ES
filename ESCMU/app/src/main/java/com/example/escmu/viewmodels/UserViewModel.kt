@@ -43,6 +43,7 @@ class UserViewModel(
                 viewModelScope.launch {
                     if (user != null) {
                         userRepository.insertUser(user)
+                        getUser()
                     }
                 }
             }

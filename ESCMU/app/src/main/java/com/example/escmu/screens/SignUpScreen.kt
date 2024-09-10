@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -37,6 +38,7 @@ import com.example.escmu.Screens
 import com.example.escmu.WindowSize
 import com.example.escmu.database.models.User
 import com.example.escmu.viewmodels.AppViewModelProvider
+import com.example.escmu.viewmodels.LoginViewModel
 import com.example.escmu.viewmodels.SignUpViewModel
 import com.example.escmu.viewmodels.UserViewModel
 
@@ -44,6 +46,7 @@ import com.example.escmu.viewmodels.UserViewModel
 fun SignUpScreen(
     windowSize: WindowSize,
     navController: NavController,
+    loginViewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory),
     signUpViewModel: SignUpViewModel = viewModel(factory = AppViewModelProvider.Factory),
     userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
@@ -69,18 +72,15 @@ fun SignUpScreen(
         onRegisterClick = {
             try {
                 signUpViewModel.createAccount(email.value,password.value)
+
                 signUpViewModel.addUserToFirestore(
                     User(name=name.value,
                         password = password.value,
                         email = email.value,
                         group = "",
                         phonenumber = phonenumber.value))
-                userViewModel.addUser(
-                    User(name=name.value,
-                        password = password.value,
-                        email = email.value,
-                        group = "",
-                        phonenumber = phonenumber.value))
+                loginViewModel.signIn(email.value,password.value)
+                userViewModel.getUserByEmail(email = email.value)
                 navController.navigate(Screens.Home.screen)
 
             }catch (e:Exception){
@@ -119,15 +119,16 @@ fun RegisterForm(
             onClick = { navController.navigate(Screens.Login.screen){popUpTo(0)} },
             style = TextStyle(
                 fontSize = 14.sp,
-
                 textDecoration = TextDecoration.Underline,
-
+                color = Color.White
                 )
         )
     }
 
     Column(
-        modifier = Modifier.padding(20.dp).fillMaxSize(),
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -139,11 +140,8 @@ fun RegisterForm(
             label = { Text(text = "Username") },
             value = username,
             onValueChange = onUsernameChange,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal
-            )
         )
-
+        Spacer(modifier = Modifier.height(20.dp))
         TextField(
             label = { Text(text = "Phone") },
             value = phonenumber,
