@@ -171,6 +171,8 @@ fun HomeScreen(
             ) {
 
                 //Get current location: place
+                place.value = "felgueiras"
+  /*
                 if (location != null) {
                     LaunchedEffect(true) {
                         var address = getLocation(location.first, location.second)
@@ -179,6 +181,7 @@ fun HomeScreen(
                         }
                     }
                 }
+*/
 
 
                 if (windowSize.width > WindowType.Compact) {
@@ -321,7 +324,7 @@ fun HomeScreen(
                             image = "",
                             date = data.value,
                             value = value.value,
-                            place = place.value
+                            place = "felgueiras"
                         ),
                         context = context
                     )
